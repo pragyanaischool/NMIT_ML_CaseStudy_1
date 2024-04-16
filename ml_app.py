@@ -21,41 +21,32 @@ model = joblib.load('finalized_model.joblib')
 @st.cache
 
 # Define the prediction function
-def predict(Present_Price, Kms_Driven, Owner, YearofMake, Fuel_Type, Seller_Type_Individual, Transmission_Type):
-    if Fuel_Type == 'Petrol':
-        Fuel_Type_Diesel = 0
-        Fuel_Type_Petrol = 1
-    elif Fuel_Type == 'Diesel':
-        Fuel_Type_Diesel = 1
-        Fuel_Type_Petrol = 0
-    elif Fuel_Type == 'Other':
-        Fuel_Type_Diesel = 0
-        Fuel_Type_Petrol = 0
-    if Transmission_Type == 'Transmission_Manual':
-        Transmission_Manual = 1
-    elif Transmission_Type == 'Transmission_Automatic':
-        Transmission_Manual = 0
-    elif Transmission_Type == 'Other':
-        Transmission_Manual = 2
-    no_year = 2021 - YearofMake
-    df = pd.DataFrame([[Present_Price, Kms_Driven, Owner, no_year, Fuel_Type_Diesel, Fuel_Type_Petrol, Seller_Type_Individual, Transmission_Manual]], columns=['Present_Price', 'Kms_Driven', 'Owner', 'no_year','Fuel_Type_Diesel', 'Fuel_Type_Petrol', 'Seller_Type_Individual','Transmission_Manual'])
+def predict(Buying, Maint, Owner, Doors, Persons, Lug_boot, Safety):
+    if Safety == 'med':
+        safety = 1
+    elif Safety == 'high':
+        safety = 2
+    elif Safety == 'low':
+        safety = 3
+    df = pd.DataFrame([[Buying, Maint, Owner, Doors, Persons, Lug_boot, safety]], columns=['Buying', 'Maint', 'Owner', 'Doors','Persons', 'Lug_boot', 'Safety'])
     prediction = model.predict(df)
     return prediction
-'buying', 'maint', 'doors', 
-                                  'persons', 
-                                  'lug_boot', 'safety'
 
 st.title('Car Evaluation Classification')
 st.image("""https://images.livemint.com/img/2020/09/16/1600x900/carsales-koVB--621x414@LiveMint_1600277936612.jpg""")
 st.header('Enter the Information of the Car:')
-Buying = st.number_input('buying:', min_value=1, max_value=5, value=1)
-Kms_Driven = st.number_input('Kms_Driven:', min_value=0, max_value=10000000, value=10000)
-Owner = st.number_input('Owner:', min_value=0, max_value=3, value=1)
-YearofMake = st.number_input('YearofMake:', min_value=1900, max_value=2024, value=2021)
-Fuel_Type = st.radio('Fuel_Type:', ('Petrol', 'Diesel', 'Other'))
-Seller_Type_Individual = st.number_input('Seller_Type_Individual:', min_value=0, max_value=1, value=1)
-Transmission_Type = st.radio('Transmission_Type:', ('Transmission_Manual', 'Transmission_Automatic', 'Other'))
+st.text("vhigh = 1 high = 2 med = 3 low = 4")
+Buying = st.number_input('buying:', min_value=1, max_value=4, value=1)
+st.text("vhigh = 1 high = 2 med = 3 low = 4")
+Maint = st.number_input('maint:', min_value=1, max_value=4, value=1)
+st.text("2-Doors = 1  3-Doors = 2 4-Doors = 3 5more = 4")
+Doors = st.number_input('doors:', min_value=1, max_value=4, value=1)
+st.text("2-persons = 1  4-persons = 2 more = 3 ")
+Persons = st.number_input('persons:', min_value=1, max_value=3, value=1)
+st.text("small = 1  med = 2 big = 3 ")
+Lug_boot = st.number_input('lug_boot:', min_value=1, max_value=3, value=1)
+Safety = st.radio('safety:', ('med', 'high', 'low'))
 
 if st.button('Submit_Car_Infos'):
-    sale_price = predict(Present_Price, Kms_Driven, Owner, YearofMake, Fuel_Type, Seller_Type_Individual, Transmission_Type)
-    st.success(f'The Sale Price of the Car : {sale_price[0]:.2f}')
+    sale_price = predict(Buying, Maint, Owner, Doors, Persons, Lug_boot, Safety)
+    st.success(f'The Evaluation of Car : {car_eval[0]}')
