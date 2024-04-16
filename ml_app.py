@@ -41,12 +41,14 @@ def predict(Present_Price, Kms_Driven, Owner, YearofMake, Fuel_Type, Seller_Type
     df = pd.DataFrame([[Present_Price, Kms_Driven, Owner, no_year, Fuel_Type_Diesel, Fuel_Type_Petrol, Seller_Type_Individual, Transmission_Manual]], columns=['Present_Price', 'Kms_Driven', 'Owner', 'no_year','Fuel_Type_Diesel', 'Fuel_Type_Petrol', 'Seller_Type_Individual','Transmission_Manual'])
     prediction = model.predict(df)
     return prediction
+'buying', 'maint', 'doors', 
+                                  'persons', 
+                                  'lug_boot', 'safety'
 
-
-st.title('Second Hand Car Sales Price Prediction')
+st.title('Car Evaluation Classification')
 st.image("""https://images.livemint.com/img/2020/09/16/1600x900/carsales-koVB--621x414@LiveMint_1600277936612.jpg""")
 st.header('Enter the Information of the Car:')
-Present_Price = st.number_input('Present_Price:', min_value=10000, max_value=10000000, value=10000)
+Buying = st.number_input('buying:', min_value=1, max_value=5, value=1)
 Kms_Driven = st.number_input('Kms_Driven:', min_value=0, max_value=10000000, value=10000)
 Owner = st.number_input('Owner:', min_value=0, max_value=3, value=1)
 YearofMake = st.number_input('YearofMake:', min_value=1900, max_value=2024, value=2021)
