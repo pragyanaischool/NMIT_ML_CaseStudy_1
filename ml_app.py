@@ -21,14 +21,14 @@ model = joblib.load('finalized_model.joblib')
 @st.cache
 
 # Define the prediction function
-def predict(Buying, Maint, Owner, Doors, Persons, Lug_boot, Safety):
+def predict(Buying, Maint,  Doors, Persons, Lug_boot, Safety):
     if Safety == 'med':
         safety = 1
     elif Safety == 'high':
         safety = 2
     elif Safety == 'low':
         safety = 3
-    df = pd.DataFrame([[Buying, Maint, Owner, Doors, Persons, Lug_boot, safety]], columns=['Buying', 'Maint', 'Owner', 'Doors','Persons', 'Lug_boot', 'Safety'])
+    df = pd.DataFrame([[Buying, Maint, Doors, Persons, Lug_boot, safety]], columns=['Buying', 'Maint',  'Doors','Persons', 'Lug_boot', 'Safety'])
     prediction = model.predict(df)
     return prediction
 
@@ -48,5 +48,5 @@ Lug_boot = st.number_input('lug_boot:', min_value=1, max_value=3, value=1)
 Safety = st.radio('safety:', ('med', 'high', 'low'))
 
 if st.button('Submit_Car_Infos'):
-    sale_price = predict(Buying, Maint, Owner, Doors, Persons, Lug_boot, Safety)
+    sale_price = predict(Buying, Maint, Doors, Persons, Lug_boot, Safety)
     st.success(f'The Evaluation of Car : {car_eval[0]}')
